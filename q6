@@ -1,0 +1,24 @@
+#include<stdio.h>
+
+int matchstickgame(int num){
+	if(num<=0 || num%5==0){
+		return -1;
+	}else{
+		return num%5;
+	}
+	
+}
+
+int main() {
+	int num;
+	printf("Enter the number of matchsticks: ");
+	scanf("%d",&num);
+	
+	matchstickgame(num);
+	if(matchstickgame(num)==-1){
+		printf("It is impossible for A to win");
+	}else{
+		printf("A should pick %d matchstick(s)",matchstickgame(num));
+	}
+	return 0;
+}
