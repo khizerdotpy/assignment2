@@ -1,0 +1,46 @@
+#include<stdio.h>
+#include<string.h>
+
+int compressWord(char inputWord[], char compressedWord[]) {
+    int compressedPos = 0;
+    int removedCount = 0;
+    int charIndex;
+    for (charIndex = 0; inputWord[charIndex] != '\0'; charIndex++) {
+        if (charIndex == 0 || inputWord[charIndex] != inputWord[charIndex - 1]) {
+            compressedWord[compressedPos++] = inputWord[charIndex];
+        } else {
+            removedCount++;
+        }
+    }
+    compressedWord[compressedPos] = '\0';
+    return removedCount;
+}
+
+int main() {
+    char wordList[10][100];
+    int numWords;
+    printf("Enter the number of words: ");
+    scanf("%d", &numWords);
+    
+    getchar();
+    
+    int wordIndex;
+    for (wordIndex = 0; wordIndex < numWords; wordIndex++) {
+        printf("Enter word %d: ", wordIndex + 1);
+        fgets(wordList[wordIndex], 100, stdin);
+        
+        int wordLength = strlen(wordList[wordIndex]);
+        if (wordLength > 0 && wordList[wordIndex][wordLength - 1] == '\n') {
+            wordList[wordIndex][wordLength - 1] = '\0';
+        }
+    }
+    
+    printf("[");
+    for (wordIndex = 0; wordIndex < numWords; wordIndex++) {
+        char compressedWord[100];
+        int removedCount = compressWord(wordList[wordIndex], compressedWord);
+        printf("%s", compressedWord);
+        printf(" (removed: %d),", removedCount);
+    }
+    printf("]");
+}
