@@ -1,0 +1,49 @@
+#include<stdio.h>
+#include<string.h>
+
+int main(){
+    char sloganList[10][100];
+    int numSlogans;
+    printf("Enter the number of slogans: ");
+    scanf("%d", &numSlogans);
+    
+    getchar();
+    
+    int sloganIndex;
+    for(sloganIndex = 0; sloganIndex < numSlogans; sloganIndex++){
+        printf("Enter slogan %d: ", sloganIndex + 1);
+        fgets(sloganList[sloganIndex], 100, stdin);
+        
+        int sloganLength = strlen(sloganList[sloganIndex]);
+        if(sloganLength > 0 && sloganList[sloganIndex][sloganLength - 1] == '\n'){
+            sloganList[sloganIndex][sloganLength - 1] = '\0';
+        }
+    }
+    
+    int maxASCII = 128;
+    int charFrequency[maxASCII];
+    int asciiIndex;
+    int charIndex;
+    
+    for(sloganIndex = 0; sloganIndex < numSlogans; sloganIndex++){
+        for(asciiIndex = 0; asciiIndex < maxASCII; asciiIndex++){
+            charFrequency[asciiIndex] = 0;
+        }
+        for (charIndex = 0; sloganList[sloganIndex][charIndex] != '\0'; charIndex++){
+            charFrequency[sloganList[sloganIndex][charIndex]]++;
+        }
+        
+        printf("Frequency for \"%s\": {", sloganList[sloganIndex]);
+        for (charIndex = 0; charIndex < maxASCII; charIndex++){
+            if (charFrequency[charIndex] > 0){
+                printf("'%c': %d", charIndex, charFrequency[charIndex]);
+                if (charIndex < maxASCII - 1){
+                    printf(", ");
+                }
+            }
+        }
+        printf("}\n");
+    }
+
+    return 0;
+}
