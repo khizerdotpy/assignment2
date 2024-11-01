@@ -1,0 +1,28 @@
+#include<stdio.h>
+
+int main(){
+	
+	int numbers[5];
+	for(int index = 0; index < 5; index++){
+		printf("Element %d: ", index);
+		scanf("%d", &numbers[index]);
+		if(numbers[index] > 999){
+			printf("Invalid Input");
+			return 0;
+		}
+	}
+	
+	int smallest, secondSmallest = numbers[0];
+	for(index = 0; index < 5; index++){
+		if(numbers[index] < smallest){
+			secondSmallest = smallest;
+			smallest = numbers[index];
+		}
+		else if(numbers[index] > smallest && numbers[index] < secondSmallest){
+			secondSmallest = numbers[index];
+		}
+	}
+	
+	printf("The second smallest element in the array is: %d", secondSmallest);
+	return 0;
+}
