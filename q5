@@ -1,0 +1,54 @@
+#include <stdio.h>
+
+void horizontalHistogram(int data[], int dataSize) {
+    printf("\nHorizontal Histogram:\n");
+    for (int i = 0; i < dataSize; i++) {
+        printf("%d ", data[i]);
+        for (int j = 0; j < data[i]; j++) {
+            printf("*");
+        }
+        printf("\n");
+    }
+}
+
+void verticalHistogram(int data[], int dataSize) {
+    printf("\nVertical Histogram:\n");
+    int maxValue = data[0];
+    for (int i = 1; i < dataSize; i++) {
+        if (data[i] > maxValue) {
+            maxValue = data[i];
+        }
+    }
+    for (int i = maxValue; i > 0; i--) {
+        for (int j = 0; j < dataSize; j++) {
+            if (data[j] >= i) {
+                printf("* ");
+            } else {
+                printf("  ");
+            }
+        }
+        printf("\n");
+    }
+    printf("\n");
+    for (int i = 0; i < dataSize; i++) {
+        printf("%d ", data[i]);
+    }
+    printf("\n");
+}
+
+int main() {
+    int dataSize;
+    printf("Enter the number of values: ");
+    scanf("%d", &dataSize);
+    
+    int data[dataSize];
+    printf("Enter %d integers:\n", dataSize);
+    for (int i = 0; i < dataSize; i++) {
+        scanf("%d", &data[i]);
+    }
+
+    horizontalHistogram(data, dataSize);
+    verticalHistogram(data, dataSize);
+
+    return 0;
+}
