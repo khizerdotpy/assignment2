@@ -1,0 +1,90 @@
+#include <stdio.h>
+#include <string.h>
+
+void fillMatrix(char matrix[6][5]) {
+    int i;
+    int j;
+    for (i = 0; i < 4; i++) {
+        for (j = 0; j < 5; j++) {
+            printf("Enter character [%d][%d]: ", i, j);
+            scanf(" %c", &matrix[i][j]);
+        }
+    }
+    matrix[4][0] = '0';
+    matrix[4][1] = '9';
+    matrix[4][2] = '5';
+    matrix[4][3] = '2';
+    matrix[4][4] = 'i';
+}
+
+int searchString(char matrix[6][5], char target[]) {
+    int targetLength = strlen(target);
+    int i;
+    int j;
+    int k;
+    for (i = 0; i < 6; i++) {
+        for (j = 0; j <= 5 - targetLength; j++) {
+            int matchFound = 1;
+            for (k = 0; k < targetLength; k++) {
+                if (matrix[i][j + k] != target[k]) {
+                    matchFound = 0;
+                    break;
+                }
+            }
+            if (matchFound) {
+                return 1;
+            }
+        }
+    }
+    for (j = 0; j < 5; j++) {
+        for (i = 0; i <= 6 - targetLength; i++) {
+            int matchFound = 1;
+            for (k = 0; k < targetLength; k++) {
+                if (matrix[i + k][j] != target[k]) {
+                    matchFound = 0;
+                    break;
+                }
+            }
+            if (matchFound) {
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
+
+int main() {
+    char matrix[6][5];
+    int currentScore = 0;
+    char searchStr[20];
+
+    fillMatrix(matrix);
+    int i;
+    int j;
+    for (i = 0; i < 6; i++) {
+        printf("|");
+        for (j = 0; j < 5; j++) {
+            printf("%c|", matrix[i][j]);
+        }
+        printf("\n");
+    }
+    while (1) {
+        printf("Find string or Enter 'x' to stop: ");
+        scanf("%s", searchStr);
+
+        if (strcmp(searchStr, "x") == 0) {
+            break;
+        }
+        if (searchString(matrix, searchStr)) {
+            printf("%s is present\n", searchStr);
+            currentScore++;
+        } else {
+            printf("%s is not present\n", searchStr);
+            currentScore--;
+        }
+        printf("Score: %d\n", currentScore);
+    }
+    printf("Total Score: %d", currentScore);
+
+    return 0;
+}
