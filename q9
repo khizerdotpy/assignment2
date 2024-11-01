@@ -1,0 +1,92 @@
+#include <stdio.h>
+
+void displayGrid(char board[5][5]) {
+    int i;
+    int j;
+    for (i = 0; i < 5; i++) {
+        for (j = 0; j < 5; j++) {
+            printf("%c ", board[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+void locatePlayer(char board[5][5], int *playerRow, int *playerCol) {
+    int i;
+    int j;
+    for (i = 0; i < 5; i++) {
+        for (j = 0; j < 5; j++) {
+            if (board[i][j] == 'P') {
+                *playerRow = i;
+                *playerCol = j;
+                return;
+            }
+        }
+    }
+}
+
+int updatePosition(char board[5][5], int newRow, int newCol, int *itemsCollected) {
+    if (newRow < 0 || newRow >= 5 || newCol < 0 || newCol >= 5) {
+        printf("Invalid move:(\n");
+        return 0;
+    }
+    
+    if (board[newRow][newCol] == 'X') {
+        printf("Invalid move:(\n");
+        return 0;
+    }
+    
+    if (board[newRow][newCol] == 'I') {
+        (*itemsCollected)++;
+        printf("Congrats! You collected an item:)\n Total items collected: %d\n", *itemsCollected);
+    }
+    return 1;
+}
+
+int main() {
+    char board[5][5] = {
+        {' ', ' ', 'I', 'X', ' '},
+        {' ', 'X', ' ', ' ', ' '},
+        {'I', ' ', 'X', 'X', ' '},
+        {' ', ' ', ' ', 'I', 'X'},
+        {' ', 'X', ' ', ' ', 'P'}
+    };
+
+    int playerRow, playerCol;
+    int itemsCollected = 0;
+    char move;
+    locatePlayer(board, &playerRow, &playerCol);
+
+    while (1) {
+        displayGrid(board);
+        printf("Enter your move ('W' for up, 'S' for down, 'A' for left, 'D' for right, 'Q' for quit): ");
+        scanf(" %c", &move);
+        if (move == 'Q') {
+            printf("Thank you:)");
+            break;
+        }
+        int newRow = playerRow;
+        int newCol = playerCol;
+
+        if (move == 'W') {
+            newRow--;
+        } else if (move == 'S') {
+            newRow++;
+        } else if (move == 'A') {
+            newCol--;
+        } else if (move == 'D') {
+            newCol++;
+        } else {
+            printf("Invalid input:(");
+            continue;
+        }
+        if (updatePosition(board, newRow, newCol, &itemsCollected)) {
+            board[playerRow][playerCol] = ' ';
+            board[newRow][newCol] = 'P';
+            playerRow = newRow;
+            playerCol = newCol;
+        }
+    }
+
+    return 0;
+}
