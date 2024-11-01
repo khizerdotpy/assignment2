@@ -1,0 +1,70 @@
+#include <stdio.h>
+#include <string.h>
+
+void sortChars(char str[]) {
+    int strLength = strlen(str);
+    int charIndex, nextCharIndex;
+    for (charIndex = 0; charIndex < strLength - 1; charIndex++) {
+        for (nextCharIndex = charIndex; nextCharIndex < strLength; nextCharIndex++) {
+            if (str[charIndex] > str[nextCharIndex]) {
+                char tempChar = str[charIndex];
+                str[charIndex] = str[nextCharIndex];
+                str[nextCharIndex] = tempChar;
+            }
+        }
+    }
+}
+
+void groupAnagrams(char transactionList[][100], int numTransactions) {
+    int isGrouped[100] = {0};
+    char sortedTransactions[100][100];
+    int transactionIndex;
+
+    for (transactionIndex = 0; transactionIndex < numTransactions; transactionIndex++) {
+        strcpy(sortedTransactions[transactionIndex], transactionList[transactionIndex]);
+        sortChars(sortedTransactions[transactionIndex]);
+    }
+
+    int i, j;
+    for (i = 0; i < numTransactions; i++) {
+        if (!isGrouped[i]) {
+            printf("Group: %s", transactionList[i]);
+            isGrouped[i] = 1;
+
+            for (j = i + 1; j < numTransactions; j++) {
+                if (strcmp(sortedTransactions[i], sortedTransactions[j]) == 0) {
+                    printf(", %s", transactionList[j]);
+                    isGrouped[j] = 1;
+                }
+            }
+            printf("\n");
+        }
+    }
+}
+
+int main() {
+    char transactionList[10][100];
+    int numTransactions;
+
+    printf("Enter the number of transactions: ");
+    scanf("%d", &numTransactions);
+    getchar();
+
+    printf("Input transactions\n[ ");
+    int transactionIndex, charIndex;
+    for (transactionIndex = 0; transactionIndex < numTransactions; transactionIndex++) {
+        printf("Transaction %d: ", transactionIndex + 1);
+        fgets(transactionList[transactionIndex], 100, stdin);
+        
+        transactionList[transactionIndex][strcspn(transactionList[transactionIndex], "\n")] = '\0';
+
+        if (transactionIndex == numTransactions - 1) {
+            printf("]\n");
+            break;
+        }
+    }
+
+    groupAnagrams(transactionList, numTransactions);
+
+    return 0;
+}
